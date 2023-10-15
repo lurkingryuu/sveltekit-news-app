@@ -1,7 +1,39 @@
 <script>
-  import { Card, Button } from "flowbite-svelte";
-  import { ArrowRightOutline } from "flowbite-svelte-icons";
-	import { NewsCard } from "/mnt/garuda/karthikeya/college/misc/devtask_svelte/src/components/NewsCard.svelte"
+	import NewsCard from "/mnt/garuda/karthikeya/college/misc/devtask_svelte/src/components/NewsCard.svelte"
+  import { onMount } from 'svelte';
+  import axios from 'axios';
+
+  // import dotenv from "dotenv";
+  // dotenv.config();
+
+  /** @type {string} */
+  const BACKEND_URL = 'https://api.lurkingryuu.tech';
+
+  /** @type {Array<{img: string, title: string, description: string, content: string, url: string}>} */
+  let news = [];
+
+  const getNews = async (page = 1) => {
+    try {
+      const response = await axios.get(`${BACKEND_URL}/api/news?page=${page}`);
+      news = response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  onMount(async () => {
+    await getNews();
+  });
+
+  // const news = [
+  //   {
+  //     img: "https://media.istockphoto.com/id/1463840090/photo/elephant-and-giraffe-sitting-on-a-cloud-in-the-sky-dreaming-and-aspirations-concept.webp?b=1&s=612x612&w=0&k=20&c=VLDrO8XtiLn4nAPOncGDOPLpxe3oe7H_hS6E5YSoGDk=",
+  //     title: "Noteworthy technology acquisitions 2021",
+  //     description: "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.",
+  //     content: "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.",
+  //     url: "https://www.cio.com/article/3620291/noteworthy-technology-acquisitions-2021.html"
+  //   }
+  // ]
 </script>
 
 <svelte:head>
@@ -16,22 +48,21 @@
 </section>
 
 <div class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 justify-items-center">
-	{#each {length: 30} as _, i}
-  <Card img="https://media.istockphoto.com/id/1463840090/photo/elephant-and-giraffe-sitting-on-a-cloud-in-the-sky-dreaming-and-aspirations-concept.webp?b=1&s=612x612&w=0&k=20&c=VLDrO8XtiLn4nAPOncGDOPLpxe3oe7H_hS6E5YSoGDk=" class="mb-4">
-    <h5
-      class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white"
-    >
-      Noteworthy technology acquisitions 2021
-    </h5>
-    <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-      Here are the biggest enterprise technology acquisitions of 2021 so far, in
-      reverse chronological order.
-    </p>
-    <Button>
-      Read more <ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
-    </Button>
-  </Card>
+	{#each news as newsItem}
+    <NewsCard 
+      img={newsItem.img}
+      title={newsItem.title}
+      description={newsItem.description}
+      url={newsItem.url}
+      content={newsItem.content}
+    />
 	{/each}
+  <!-- IMplement loading and pagination -->
+  <div class="flex justify-center">
+    <button class="px-4 py-2 text-white bg-blue-500 rounded-md" on:click={}>Load more</button>
+  </div> 
+ 
+
 </div>
 
 <style>

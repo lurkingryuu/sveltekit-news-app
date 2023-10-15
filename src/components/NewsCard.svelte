@@ -6,7 +6,7 @@
 	export let img;
 
 	/** @type {string} */
-	export let className;
+	export let className = "";
 
 	/** @type {string} */
 	export let url;
@@ -16,6 +16,9 @@
 
 	/** @type {string} */
 	export let description;
+
+  /** @type {string} */
+  export let content;
 
 	
 </script>
@@ -27,26 +30,19 @@
   <h5
     class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white {className}"
   >
-    Noteworthy technology acquisitions 2021
+    {title}
   </h5>
   <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
-    Here are the biggest enterprise technology acquisitions of 2021 so far, in
-    reverse chronological order.
+		{description}
   </p>
-  <Button>
+  <p class="mb-3 font-normal text-gray-900 dark:text-gray-400 leading-tight">
+    {content}
+  </p>
+  <Button href={url} target="blank">
     Read more <ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
   </Button>
 </Card>
 
 <style>
-	section {
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
-		flex: 0.6;
-	}
 
-	h1 {
-		width: 100%;
-	}
+</style>
