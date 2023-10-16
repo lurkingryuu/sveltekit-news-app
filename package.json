@@ -9,7 +9,7 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json",
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./jsconfig.json --watch",
     "lint": "eslint .",
-    "start": "export PORT=8888 && node ./build"
+    "start": "export PORT=3000 && export HOST=0.0.0.0 && node ./build"
   },
   "devDependencies": {
     "@fontsource/fira-mono": "^4.5.10",
@@ -18,6 +18,7 @@
     "@sveltejs/adapter-node": "^1.3.1",
     "@sveltejs/kit": "^1.20.4",
     "@types/cookie": "^0.5.1",
+    "@types/lunr": "^2.3.5",
     "autoprefixer": "^10.4.14",
     "eslint": "^8.28.0",
     "eslint-plugin-svelte": "^2.30.0",
@@ -34,6 +35,7 @@
   },
   "type": "module",
   "dependencies": {
+    "lunr": "^2.3.9",
     "svelte-infinite-scroll": "^2.0.1"
   }
 }

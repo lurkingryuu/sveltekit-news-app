@@ -1,38 +1,50 @@
-# create-svelte
+# NewsApp - Inter IIT Tech Meet 12.0 - IIT KGP Development Team Selection Task
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+## How to Run Locally?
 
-## Creating a project
+1. ### Using Docker
 
-If you're seeing this, you've probably already done this step. Congrats!
+   - Clone the repository
+   - Navigate to the root directory
+   - Run `docker run -p 8888:8888 -d lurkingryuu/devtask_svelte`
+   - Navigate to `localhost:8888` to view the app
 
-```bash
-# create a new project in the current directory
-npm create svelte@latest
+2. ### Without Docker
 
-# create a new project in my-app
-npm create svelte@latest my-app
-```
+   - Clone the repository
 
-## Developing
+     #### Setting up the frontend
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+     - Install nodejs and npm
+     - Run `npm install` to install all the dependencies
+     - Run `npm run dev` to start the backend server
 
-```bash
-npm run dev
+## Problem Statement
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+- Clean and responsive front-end
+- Should contain a search bar for headlines and keywords
+- A news entity should have the following features:
+  - Headline
+  - Content
+  - Image
+  - Video (playback optional)
+- Real time news feed
+  - Extensive web scraping is not required. Simply ensure that the coming feed conveys a sense of freshness.
+- Filtering options for
+  - Geographic location
+  - Topics (eg. Sports, Politics, Technology, Finance etc.)
+- Newsletter subscription service
+  - Email can be stored in your choice of database or data-structure
 
-## Building
+## Remaining Features to Be Implemented
 
-To create a production version of your app:
+1. Video Integration in the News Section
 
-```bash
-npm run build
-```
+   - Unfortunately, the utilized news API does not furnish video content.
 
-You can preview the production build with `npm run preview`.
+2. Topic-based Filtering and Search Capability
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+   - Regrettably, I was unable to implement filtering due to time limitations and the incompatibility of lunr.js with SvelteKit.
+
+3. Newsletter Subscription Functionality
+   - The backend successfully handles subscription and unsubscription operations, but the mailing service is not functional, preventing the implementation of the newsletter subscription service.
