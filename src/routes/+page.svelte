@@ -1,7 +1,8 @@
 <script>
-	import NewsCard from "/mnt/garuda/karthikeya/college/misc/devtask_svelte/src/components/NewsCard.svelte"
+	import { Button } from "flowbite-svelte";
+  import { ArrowDownOutline } from "flowbite-svelte-icons";
+  import NewsCard from "../components/NewsCard.svelte";
   import { onMount } from 'svelte';
-  import axios from 'axios';
 
   // import dotenv from "dotenv";
   // dotenv.config();
@@ -14,30 +15,26 @@
 
   const getNews = async (page = 1) => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/api/news?page=${page}`);
-      news = response.data;
+      const response = await fetch(`${BACKEND_URL}/api/news`);
+      news = [...news, ...(await response.json())]
     } catch (error) {
       console.error(error);
     }
   }
 
+  let page = 1;
   onMount(async () => {
     await getNews();
   });
 
-  // const news = [
-  //   {
-  //     img: "https://media.istockphoto.com/id/1463840090/photo/elephant-and-giraffe-sitting-on-a-cloud-in-the-sky-dreaming-and-aspirations-concept.webp?b=1&s=612x612&w=0&k=20&c=VLDrO8XtiLn4nAPOncGDOPLpxe3oe7H_hS6E5YSoGDk=",
-  //     title: "Noteworthy technology acquisitions 2021",
-  //     description: "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.",
-  //     content: "Here are the biggest enterprise technology acquisitions of 2021 so far, in reverse chronological order.",
-  //     url: "https://www.cio.com/article/3620291/noteworthy-technology-acquisitions-2021.html"
-  //   }
-  // ]
+  const loadMore = async () => {
+    page++;
+    await getNews(page);
+  }
 </script>
 
 <svelte:head>
-  <title>Home</title>
+  <title>News Forum</title>
   <meta name="description" content="Svelte demo app" />
 </svelte:head>
 
@@ -54,16 +51,16 @@
       title={newsItem.title}
       description={newsItem.description}
       url={newsItem.url}
-      content={newsItem.content}
+      content={newsItem.content + newsItem.description}
     />
 	{/each}
-  <!-- IMplement loading and pagination -->
-  <div class="flex justify-center">
-    <button class="px-4 py-2 text-white bg-blue-500 rounded-md" on:click={}>Load more</button>
-  </div> 
- 
-
 </div>
+<Button 
+  on:click={loadMore}
+  class="mt-4 mx-auto my-auto"
+>
+  Load more <ArrowDownOutline class="w-3.5 h-3.5 ml-2 text-white" />
+</Button>
 
 <style>
   section {

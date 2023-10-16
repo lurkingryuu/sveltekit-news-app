@@ -35,10 +35,7 @@
   <p class="mb-3 font-normal text-gray-700 dark:text-gray-400 leading-tight">
 		{description}
   </p>
-  <p class="mb-3 font-normal text-gray-900 dark:text-gray-400 leading-tight">
-    {content}
-  </p>
-  <Button href={url} target="blank">
+  <Button href={url} target="blank" class="relative bottom-0">
     Read more <ArrowRightOutline class="w-3.5 h-3.5 ml-2 text-white" />
   </Button>
 </Card>
