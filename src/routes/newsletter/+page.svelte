@@ -6,7 +6,6 @@
 
 	let email = '';
   const Subscribe = async () => {
-	
 	try {
 	  const response = await fetch(`${BACKEND_URL}/api/subscribe`, {
 		method: 'POST',
@@ -38,8 +37,6 @@
   <p class="mb-6 mt-6 font-bold text-gray-900 dark:text-gray-100">
     We publish our newsletter every week. Sign up to receive it — it's free, and we won't spam you! You can also unsubscribe at any time.
   </p>
-
-  
   
   <Card class="w-full mx-auto md:w-1/2">
 	<form class="flex flex-col space-y-6" on:submit={Subscribe}>

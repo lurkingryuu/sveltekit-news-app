@@ -15,8 +15,22 @@
 
   const getNews = async (page = 1) => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/news`);
+      const response = await fetch(`${BACKEND_URL}/api/news?page=${page}`);
       news = [...news, ...(await response.json())]
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const refreshNews = async () => {
+    try {
+      // post to backend
+      const response = await fetch(`${BACKEND_URL}/api/refresh`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
     } catch (error) {
       console.error(error);
     }
@@ -24,11 +38,16 @@
 
   let page = 1;
   onMount(async () => {
+    await refreshNews();
     await getNews();
   });
 
   const loadMore = async () => {
     page++;
+    if (page % 8) {
+      await refreshNews();
+    }
+    console.log(page);
     await getNews(page);
   }
 </script>
@@ -51,7 +70,6 @@
       title={newsItem.title}
       description={newsItem.description}
       url={newsItem.url}
-      content={newsItem.content + newsItem.description}
     />
 	{/each}
 </div>

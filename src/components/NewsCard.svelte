@@ -16,10 +16,6 @@
 
 	/** @type {string} */
 	export let description;
-
-  /** @type {string} */
-  export let content;
-
 	
 </script>
 
