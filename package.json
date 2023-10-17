@@ -38,8 +38,8 @@
   },
   "type": "module",
   "dependencies": {
+    "country-code-lookup": "^0.1.0",
     "fuse.js": "^6.6.2",
-    "lunr": "^2.3.9",
     "svelte-infinite-scroll": "^2.0.1"
   }
 }

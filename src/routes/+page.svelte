@@ -1,11 +1,12 @@
 <script>
-  import { Button, Input } from "flowbite-svelte";
+  import { Button, Input, Label, Select } from "flowbite-svelte";
   import { ArrowDownOutline } from "flowbite-svelte-icons";
   import NewsCard from "../components/NewsCard.svelte";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import Fuzzy from "svelte-fuzzy";
   import { PUBLIC_BACKEND_URL } from "$env/static/public";
 
+  // -------------------------- Data Fetching -------------------------- //
   /** @type {string} */
   const BACKEND_URL = PUBLIC_BACKEND_URL;
 
@@ -68,6 +69,7 @@
     await getNews(page);
   };
 
+  // -------------------------- Fussy Search -------------------------- //
   let query = "";
 
   // Fuse.js options
@@ -118,7 +120,107 @@
           }
         }
       }
-      console.log(search_results);
+    }
+  };
+
+  // -------------------------- Filter -------------------------- //
+  // Based on country and category
+
+  import lookup from "country-code-lookup";
+  let country = "us";
+  let category = "general";
+  const countries = [
+    "ae",
+    "ar",
+    "at",
+    "au",
+    "be",
+    "bg",
+    "br",
+    "ca",
+    "ch",
+    "cn",
+    "co",
+    "cu",
+    "cz",
+    "de",
+    "eg",
+    "fr",
+    "gb",
+    "gr",
+    "hk",
+    "hu",
+    "id",
+    "ie",
+    "il",
+    "in",
+    "it",
+    "jp",
+    "kr",
+    "lt",
+    "lv",
+    "ma",
+    "mx",
+    "my",
+    "ng",
+    "nl",
+    "no",
+    "nz",
+    "ph",
+    "pl",
+    "pt",
+    "ro",
+    "rs",
+    "ru",
+    "sa",
+    "se",
+    "sg",
+    "si",
+    "sk",
+    "th",
+    "tr",
+    "tw",
+    "ua",
+    "us",
+    "ve",
+    "za",
+  ];
+  const categories = [
+    "business",
+    "entertainment",
+    "general",
+    "health",
+    "science",
+    "sports",
+    "technology",
+  ];
+
+  /** @type {Array<{value: String, name: String}>} */
+  const countryOptions = [];
+  /** @type {Array<{value: String, name: String}>} */
+  const categoryOptions = [];
+  for (let i = 0; i < countries.length; i++) {
+    countryOptions.push({
+      value: countries[i],
+      name: lookup.byInternet(countries[i])?.country || countries[i],
+    });
+  }
+  for (let i = 0; i < categories.length; i++) {
+    categoryOptions.push({
+      value: categories[i],
+      name: categories[i][0].toUpperCase() + categories[i].slice(1),
+    });
+  }
+
+  let filterHandler = async () => {
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/api/filter?country=${country}&category=${category}`
+      );
+      const newsArray = await response.json();
+      data = newsArray;
+    } catch (error) {
+      console.error(error);
     }
   };
 </script>
@@ -148,6 +250,34 @@
   <Fuzzy {query} {data} {options} bind:formatted />
 </div>
 
+<div class="flex justify-center mt-4 mb-4">
+  <Label class="ml-4" for="country">
+    Country
+    <Select
+      id="country"
+      items={countryOptions}
+      bind:value={country}
+      on:change={() => {
+        filterHandler();
+      }}
+    />
+  </Label>
+  <Label 
+    class="ml-4"
+    for="category"
+  >
+    Category
+    <Select
+      id="category"
+      items={categoryOptions}
+      bind:value={category}
+      on:change={() => {
+        filterHandler();
+      }}
+    />
+  </Label>
+</div>
+
 <div
   class="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 justify-items-center"
 >
@@ -173,7 +303,7 @@
 </div>
 
 <!-- Not found Text -->
-<div 
+<div
   class="flex justify-center"
   style="display: {query.length === 0 ? 'none' : 'block'}"
 >
@@ -182,7 +312,7 @@
       No news found
     </h1>
   {/if}
-</div>  
+</div>
 
 <Button on:click={loadMore} class="mt-4 mx-auto my-auto">
   Load more <ArrowDownOutline class="w-3.5 h-3.5 ml-2 text-white" />
